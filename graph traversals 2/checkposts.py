@@ -49,7 +49,7 @@ def solve(n, costs, graph):
         min_cost += min_scc_cost
         ways = (ways * sum(costs[i] == min_scc_cost for i in scc)) % MOD
 
-    return min_cost, ways
+    return min_cost, ways 
 
 n = int(input().strip())
 costs = list(map(int, input().strip().split()))
