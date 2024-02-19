@@ -3,7 +3,7 @@ def dfs(graph, v, visited, stack):
     for i in graph[v]:
         if not visited[i]:
             dfs(graph, i, visited, stack)
-    stack = stack.append(v)
+    stack.append(v)
 
 def transpose(graph, n):
     g = [[] for _ in range(n)]
@@ -51,14 +51,14 @@ def solve(n, costs, graph):
 
     return min_cost, ways
 
-# Example usage
-n = 5  # Number of junctions
-costs = [1, 2, 3, 4, 5]  # Costs for each junction
-m = 4  # Number of roads
-edges = [(0, 1), (1, 2), (2, 0), (3, 4)]  # Edges representing one-way roads
+n = int(input().strip())
+costs = list(map(int, input().strip().split()))
+m = int(input().strip())
 
 graph = [[] for _ in range(n)]
-for u, v in edges:
-    graph[u].append(v)
+for _ in range(m):
+    u, v = map(int, input().strip().split())
+    graph[u - 1].append(v - 1)
 
-print(solve(n, costs, graph))
+min_cost, ways = solve(n, costs, graph)
+print(min_cost, ways)
