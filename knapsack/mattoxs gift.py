@@ -1,16 +1,15 @@
-N, S = list(map(int, input().split()))
+N, S = map(int, input().split())
 w = [0] * N
 c = [0] * N
 for i in range(N):
-  w[i], c[i] = list(map(int, input().split()))
-  
-def knapsack(w, c, item, remW):
-  if item == N or remW <= 0:
-    return 0
-  if w[item] > remW:
-    return (knapsack(w, c, item + 1, remW))
-  return max(knapsack(w, c, item + 1, remW), 
-             c[item] + knapsack(w, c, item + 1, remW - w[item]), 
-             c[item] + knapsack(w, c, item, remW - w[item]))
+    w[i], c[i] = map(int, input().split())
 
-print(knapsack(w, c, 0, S))
+dp = {}  # Using a dictionary as a sparse array
+dp[0] = 0  # Base case
+
+for i in range(N):
+    for j in range(w[i], S + 1):
+        if j in dp or (j - w[i]) in dp:
+            dp[j] = max(dp.get(j, 0), dp.get(j - w[i], 0) + c[i])
+
+print(dp.get(S, 0))
