@@ -16,7 +16,7 @@ def tsp(n, beauty, price_floor):
                 cost = max(price_floor[i], beauty[j] - beauty[i])
                 dp[j][mask] = min(dp[j][mask], dp[i][mask ^ (1 << j)] + cost)
 
-    min_cost = sys.maxsize
+    min_cost = float('inf')
     for i in range(1, n):
         cost = max(price_floor[i], beauty[0] - beauty[i])
         min_cost = min(min_cost, dp[i][(1 << n) - 1] + cost)
