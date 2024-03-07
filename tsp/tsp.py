@@ -1,5 +1,3 @@
-import sys
-
 def tsp(n, beauty, price_floor):
     dp = [[float('inf')] * (1 << n) for _ in range(n)]
     dp[0][1] = 0
@@ -8,20 +6,22 @@ def tsp(n, beauty, price_floor):
         if mask & 1 == 0:
             continue
         for i in range(n):
-            if mask & (1 << i) == 0:
-                continue
-            for j in range(n):
-                if i == j or mask & (1 << j) == 0:
-                    continue
-                cost = max(price_floor[i], beauty[j] - beauty[i])
-                dp[j][mask] = min(dp[j][mask], dp[i][mask ^ (1 << j)] + cost)
+            if mask & (1 << i):
+                prev_mask = mask ^ (1 << i)
+                for j in range(n):
+                    if prev_mask & (1 << j):
+                        cost = max(price_floor[j], beauty[i] - beauty[j])
+                        dp[i][mask] = min(dp[i][mask], dp[j][prev_mask] + cost)
 
     min_cost = float('inf')
+    final_mask = (1 << n) - 1
     for i in range(1, n):
-        cost = max(price_floor[i], beauty[0] - beauty[i])
-        min_cost = min(min_cost, dp[i][(1 << n) - 1] + cost)
+        if final_mask & (1 << i):
+            cost = max(price_floor[i], beauty[0] - beauty[i])
+            min_cost = min(min_cost, dp[i][final_mask] + cost)
 
     return min_cost
+
 
 n = int(input())
 beauty = []
@@ -31,4 +31,5 @@ for _ in range(n):
     beauty.append(a)
     price_floor.append(c)
 
-print(tsp(n, beauty, price_floor))
+min_cost = tsp(n, beauty, price_floor)
+print(min_cost)
