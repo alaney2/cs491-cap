@@ -1,24 +1,25 @@
 import math
 
 def update(block_sum, arr, left_idx, right_idx, val):
-
     start_block = left_idx // block_size
     end_block = right_idx // block_size
-    
+
     if start_block == end_block:
         for i in range(left_idx, right_idx + 1):
             arr[i] += val
-            block_sum[start_block] += val
+        block_sum[start_block] += val * (right_idx - left_idx + 1)
     else:
         for i in range(left_idx, (start_block + 1) * block_size):
             arr[i] += val
-            block_sum[start_block] += val
+        block_sum[start_block] += val * ((start_block + 1) * block_size - left_idx)
+
         for i in range(start_block + 1, end_block):
-            block_sum[i] += val
+            block_sum[i] += val * block_size
+
         for i in range(end_block * block_size, right_idx + 1):
             arr[i] += val
-            block_sum[end_block] += val
-          
+        block_sum[end_block] += val * (right_idx + 1 - end_block * block_size)
+
 
 def query(block_sum, arr, l, r):
     sum = 0
